@@ -1,0 +1,61 @@
+<!--- template for cart -->
+{% extends 'store/main.html' %} <!-- so all our other pages inherits from  inherit from main.html -->
+{% load static %}
+{% block content %} <!--SET WHERE CONTENT IS GONNA SIT-->
+<div class="row"> <!-- for our row. built in-->
+    <div class="col-lg-12"> <!--create a full width column. To do that we want to give the child div the class of "col-lg-12"-->
+        <!--this is for continue, items, continue shopping and total-->
+        <div class="box-element"> <!-- box 1-->
+            <a  class="btn btn-outline-dark" href="{% url 'store' %}">&#x2190; Continue Shopping</a> <!-- back button to the home page , link with some Boostrap styling with the text and a back arrow inside the first box element.-->
+            <br>
+			<br>
+			<table class="table">
+				<tr> <!--specifies a row in html-->
+					<th><h5>Items: <strong>{{order.get_cart_items}}</strong></h5></th> <!--th specifies the cell inside the row--><!--cell of heading items-->
+					<!--3 is placeholder-->
+                    <th><h5>Total:<strong> ${{order.get_cart_total|floatformat:2}}</strong></h5></th> <!--cell of heading total-->
+                    <!--$42 is placeholder-->
+					<th>
+						<a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'checkout' %}">Checkout</a> <!--button for chckout. points to checkout if pressed.-->
+                        <!--- margin 5px means right margin. 10 means top,15bot 20 left, success=green-->
+					</th>
+				</tr>
+			</table>
+        </div>
+
+        <br>
+        <div class="box-element"> <!--box 2-->
+            <div class="cart-row">
+                <!--div with the class of "cart-row" (Custom CSS in main.css) and 5 divs inside "cart-row" to represent each column.-->
+                <!--- We will be using flexbox grid inline to create separation and style the elements inline.-->
+                <div style="flex:2"></div>
+                <div style="flex:2"><strong>Item</strong></div>
+                <div style="flex:1"><strong>Price</strong></div>
+                <div style="flex:1"><strong>Quantity</strong></div>
+                <div style="flex:1"><strong>Total</strong></div>
+            </div>
+            {% for item in items %}
+            <div class="cart-row"> <!--user defined class in main.css-->
+                <!--another row that will represent the items  user has added to their cart-->
+                <div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
+                <div style="flex:2">{{item.product.name}}</div> <!--to display product name-->
+                <div style="flex:1">${{item.product.price}}</div> <!--to dispaly pricer-->
+                <div style="flex:1"> <!--flex for allignment-->
+                    <p class="quantity">{{item.quantity}}</p> <!--2 dispaly quantity-->
+                    <div class="quantity">
+                        <img data-product={{item.product.id}} data-action="add" class="chg-quantity update-cart" src="{% static  'images/arrow-up.png' %}"> <!--for the arrow up button. changes quantity-->
+                
+                        <img data-product={{item.product.id}} data-action="remove" class="chg-quantity update-cart" src="{% static  'images/arrow-down.png' %}"> 
+                        <!--for arrow down button. changes quantity-->
+                        <!--update-cart class for event handling-->
+                        <!--data-product={{item.product.id}} our attribute-->
+                        <!--data-action="remove" action-->
+                    </div>
+                </div>
+                <div style="flex:1"><p>${{item.get_total}}</p></div> <!-- to display total for each itemsr-->
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

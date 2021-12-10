@@ -1,0 +1,29 @@
+    <!--- template that shows store front with all the products -->
+    {% extends 'store/main.html' %}
+    {% load static %}
+    {% block content %}
+        <div class="row"> <!--div to add rows for our product and 3 columns(bootstrap format)-->
+            {% for product in products %}
+            <div class="col-lg-4"> <!-- first col-->
+                <img class="thumbnail" src="{{product.imageURL}}"> <!--we add our image in 1st row 1st col-->
+                <div class="box-element product"> <!-- we create 1st box for 1st row-->
+                    <h6><strong>{{product.name}}</strong></h6><!--adding title-->
+                    <hr> <!--line-->
+                
+                    <button  data-product ={{product.id}} data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button> 
+                    <!-- adding Add to cart buttonbelow title-->
+                    <!--data-product={{product.id}} or data-"attribute"="value , we added this custom attribute to the button so we we know which  product was clicked"-->
+                    <!-- data-action="add", an action attribute when button is clicked, it adds item to cart-->
+                    <!-- update-cart, class that allows js to set event handler on this button-->
+                    <a class="btn btn-outline-success" href="#">View</a> <!--adding View button =-->
+                    <h4 style="display: inline-block; float: right"><strong>${{product.price|floatformat:2}}</strong></h4> <!--display price with only 2 decimal points, right side-->
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    {% endblock content %}
+
+
+
+
